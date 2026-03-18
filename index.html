@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Skills Library</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e6;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .count {
+    font-size: 14px;
+    color: #6b6b80;
+    font-weight: 400;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #6b6b80;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .install-banner {
+    background: #12121c;
+    border: 1px solid #2a2a3a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .install-banner-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .install-banner-text {
+    font-size: 13px;
+    color: #8888a0;
+    line-height: 1.5;
+  }
+
+  .install-banner-text code {
+    background: #1a1a2e;
+    color: #7b7bf0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #2a2a3a;
+    background: transparent;
+    color: #8888a0;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover { border-color: #4a4a6a; color: #c0c0d0; }
+  .filter-btn.active { background: #1a1a2e; border-color: #5b5bf0; color: #fff; }
+
+  .search-box {
+    width: 100%;
+    max-width: 360px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #2a2a3a;
+    background: #12121c;
+    color: #e0e0e6;
+    font-size: 14px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-box:focus { border-color: #5b5bf0; }
+  .search-box::placeholder { color: #4a4a5a; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: #12121c;
+    border: 1px solid #1e1e30;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.25s;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    border-color: #3a3a5a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .card-title { font-size: 16px; font-weight: 600; color: #fff; }
+
+  .card-category {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .cat-strategy { background: #1a1a3a; color: #7b7bf0; }
+  .cat-content { background: #1a2a1a; color: #5bcc5b; }
+  .cat-technical { background: #2a1a1a; color: #f07b7b; }
+  .cat-operations { background: #2a2a1a; color: #ccaa5b; }
+  .cat-sales { background: #1a2a2a; color: #5baacc; }
+  .cat-utility { background: #2a1a2a; color: #cc5baa; }
+
+  .card-desc {
+    font-size: 13px;
+    color: #8888a0;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .triggers-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #5b5b70;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .triggers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .trigger-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #1a1a28;
+    color: #7777a0;
+    border: 1px solid #22223a;
+  }
+
+  .capabilities {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+
+  .capabilities li {
+    font-size: 12px;
+    color: #7777a0;
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .capabilities li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3a3a5a;
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #1e1e30;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #2a2a3a;
+    background: #1a1a28;
+    color: #b0b0c0;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn:hover {
+    border-color: #5b5bf0;
+    color: #fff;
+    background: #1a1a2e;
+  }
+
+  .btn-primary {
+    background: #1a1a3a;
+    border-color: #3a3a6a;
+    color: #9b9bf0;
+  }
+
+  .btn-primary:hover {
+    background: #2a2a4a;
+    border-color: #5b5bf0;
+    color: #fff;
+  }
+
+  .btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  .btn.copied {
+    border-color: #3a6a3a;
+    color: #5bcc5b;
+    background: #0a1a0a;
+  }
+
+  .ref-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #5bcc5b;
+    margin-bottom: 12px;
+    padding: 3px 8px;
+    background: #0a1a0a;
+    border-radius: 6px;
+    border: 1px solid #1a2a1a;
+  }
+
+  .slash {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: #5b5bf0;
+    background: #1a1a2e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .file-count {
+    font-size: 11px;
+    color: #5b5b70;
+    margin-top: 4px;
+  }
+
+  .hidden { display: none; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: #12121c;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #1e1e30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+    color: #fff;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: #6b6b80;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  .modal-close:hover { color: #fff; }
+
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .install-step {
+    margin-bottom: 20px;
+  }
+
+  .install-step-num {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5b5bf0;
+    margin-bottom: 6px;
+  }
+
+  .install-step p {
+    font-size: 13px;
+    color: #8888a0;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .code-block {
+    background: #0a0a14;
+    border: 1px solid #1e1e30;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: #c0c0d0;
+    overflow-x: auto;
+    position: relative;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .code-block .copy-inline {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    border: 1px solid #2a2a3a;
+    background: #1a1a28;
+    color: #8888a0;
+    cursor: pointer;
+  }
+
+  .code-block .copy-inline:hover { color: #fff; border-color: #5b5bf0; }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #1e1e30;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .modal-footer .btn { flex: none; padding: 8px 20px; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; gap: 4px; }
+    .install-banner { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Claude Code Skills Library</h1>
+    <span class="count">11 skills</span>
+  </header>
+  <p class="subtitle">Production-ready skills for Claude Code CLI. Click "Install" on any skill to get setup instructions, or download the full skill package.</p>
+
+  <div class="install-banner">
+    <div class="install-banner-icon">&#9889;</div>
+    <div class="install-banner-text">
+      <strong style="color:#fff;">How skills work:</strong> Each skill is a folder with a <code>SKILL.md</code> file (and optional reference files) that lives in <code>~/.claude/skills/</code>. Download a skill, drop it in that directory, and Claude Code picks it up automatically. Use the slash command or just say the trigger phrase.
+    </div>
+  </div>
+
+  <input type="text" class="search-box" placeholder="Search skills..." id="search">
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="strategy">Strategy</button>
+    <button class="filter-btn" data-filter="content">Content</button>
+    <button class="filter-btn" data-filter="technical">Technical</button>
+    <button class="filter-btn" data-filter="operations">Operations</button>
+    <button class="filter-btn" data-filter="sales">Sales</button>
+    <button class="filter-btn" data-filter="utility">Utility</button>
+  </div>
+
+  <div class="grid" id="skills-grid">
+
+    <!-- Building Automation Systems -->
+    <div class="card" data-category="technical" data-skill="building-automation-systems">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Building Automation Systems</div>
+          <div class="slash">/building-automation-systems</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-technical">Technical</span>
+      </div>
+      <p class="card-desc">Design, audit, and build automation systems, workflows, and digital infrastructure. CRM automation, lead scoring, behavior-triggered sequences, MCP servers, and multi-agent architecture.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">automate</span>
+        <span class="trigger-tag">CRM automation</span>
+        <span class="trigger-tag">lead nurture</span>
+        <span class="trigger-tag">MCP server</span>
+        <span class="trigger-tag">process automation</span>
+        <span class="trigger-tag">automation audit</span>
+        <span class="trigger-tag">zapier</span>
+        <span class="trigger-tag">make</span>
+      </div>
+      <ul class="capabilities">
+        <li>CRM workflows and lead nurture sequences</li>
+        <li>Lead scoring models with 30 email variations</li>
+        <li>MCP server development (Node.js)</li>
+        <li>12-week rollout plans with ROI analysis</li>
+        <li>Revenue infrastructure and multi-agent systems</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('building-automation-systems')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('building-automation-systems')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Building Software -->
+    <div class="card" data-category="technical" data-skill="building-software">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Building Software</div>
+          <div class="slash">/building-software</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-technical">Technical</span>
+      </div>
+      <p class="card-desc">Write, review, debug, test, and architect software. Frontend (React/Next.js), backend (Node.js/APIs/databases), system design, code review, testing, and git workflows.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">write code</span>
+        <span class="trigger-tag">build this feature</span>
+        <span class="trigger-tag">debug</span>
+        <span class="trigger-tag">code review</span>
+        <span class="trigger-tag">system design</span>
+        <span class="trigger-tag">React</span>
+        <span class="trigger-tag">API</span>
+        <span class="trigger-tag">write tests</span>
+      </div>
+      <ul class="capabilities">
+        <li>React/Next.js frontend development</li>
+        <li>Backend APIs and database design</li>
+        <li>System architecture and design docs</li>
+        <li>Multi-dimension code review</li>
+        <li>Unit, integration, and E2E testing</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('building-software')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('building-software')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Developing Marketing Strategy -->
+    <div class="card" data-category="strategy" data-skill="developing-marketing-strategy">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Developing Marketing Strategy</div>
+          <div class="slash">/developing-marketing-strategy</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-strategy">Strategy</span>
+      </div>
+      <p class="card-desc">Full marketing strategies, funnel design, go-to-market plans, agency positioning, channel mix recommendations, and service packaging.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">marketing strategy</span>
+        <span class="trigger-tag">marketing plan</span>
+        <span class="trigger-tag">funnel design</span>
+        <span class="trigger-tag">go-to-market</span>
+        <span class="trigger-tag">agency positioning</span>
+        <span class="trigger-tag">service packages</span>
+      </div>
+      <ul class="capabilities">
+        <li>Integrated marketing plans with channel strategy</li>
+        <li>5 channel playbooks (content, email, paid, social, SEO)</li>
+        <li>5 funnel templates with copy frameworks</li>
+        <li>8 tiered service packages for agencies</li>
+        <li>90-day launch roadmaps with financial projections</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('developing-marketing-strategy')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('developing-marketing-strategy')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Engineering Prompts and AI -->
+    <div class="card" data-category="technical" data-skill="engineering-prompts-and-ai">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Engineering Prompts and AI</div>
+          <div class="slash">/engineering-prompts-and-ai</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-technical">Technical</span>
+      </div>
+      <p class="card-desc">Improve, analyze, and build prompts for production use. Design AI-powered systems, evaluate prompt quality, create prompt libraries, and architect agentic workflows.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">improve this prompt</span>
+        <span class="trigger-tag">prompt engineering</span>
+        <span class="trigger-tag">AI workflow design</span>
+        <span class="trigger-tag">prompt evaluation</span>
+        <span class="trigger-tag">agentic workflow</span>
+        <span class="trigger-tag">prompt library</span>
+      </div>
+      <ul class="capabilities">
+        <li>6-dimension prompt evaluation scorecard</li>
+        <li>Production-ready prompt rewrites</li>
+        <li>Prompt system and library design with taxonomy</li>
+        <li>Agentic workflow and orchestration architecture</li>
+        <li>Human-in-the-loop touchpoint mapping</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('engineering-prompts-and-ai')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('engineering-prompts-and-ai')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Humanise Text -->
+    <div class="card" data-category="utility" data-skill="humanise-text">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Humanise Text</div>
+          <div class="slash">/humanise-text</div>
+          <div class="file-count">2 files</div>
+        </div>
+        <span class="card-category cat-utility">Utility</span>
+      </div>
+      <p class="card-desc">Transform AI-generated or robotic text into natural, human-written content. Eliminates mechanical patterns and introduces realistic human writing characteristics.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">humanize text</span>
+        <span class="trigger-tag">make it sound human</span>
+        <span class="trigger-tag">remove AI patterns</span>
+        <span class="trigger-tag">less robotic</span>
+        <span class="trigger-tag">avoid AI detection</span>
+      </div>
+      <ul class="capabilities">
+        <li>Eliminates AI rhetorical constructions</li>
+        <li>Varies sentence structure and pacing</li>
+        <li>Adds subtle human imperfections</li>
+        <li>Self-audit process with correction pass</li>
+        <li>Includes comprehensive prohibited patterns reference</li>
+      </ul>
+      <div class="ref-badge">+ Reference file: overused-ai-patterns.md</div>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('humanise-text')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('humanise-text')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Managing Client Operations -->
+    <div class="card" data-category="operations" data-skill="managing-client-operations">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Managing Client Operations</div>
+          <div class="slash">/managing-client-operations</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-operations">Operations</span>
+      </div>
+      <p class="card-desc">Client onboarding materials, meeting transcript processing, action item extraction, file organization, spreadsheet analysis, and client success operations.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">client onboarding</span>
+        <span class="trigger-tag">meeting transcript</span>
+        <span class="trigger-tag">action items</span>
+        <span class="trigger-tag">organize files</span>
+        <span class="trigger-tag">spreadsheet analysis</span>
+        <span class="trigger-tag">data analysis</span>
+      </div>
+      <ul class="capabilities">
+        <li>7-email client onboarding sequences</li>
+        <li>Meeting transcript processing with action items</li>
+        <li>Personalized follow-up emails per participant</li>
+        <li>File organization with naming conventions</li>
+        <li>Dashboard structure recommendations</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('managing-client-operations')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('managing-client-operations')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Processing Documents -->
+    <div class="card" data-category="utility" data-skill="processing-documents">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Processing Documents</div>
+          <div class="slash">/processing-documents</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-utility">Utility</span>
+      </div>
+      <p class="card-desc">Process, extract from, analyze, create, or convert documents. PDFs, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">process PDF</span>
+        <span class="trigger-tag">Word document</span>
+        <span class="trigger-tag">Excel file</span>
+        <span class="trigger-tag">PowerPoint</span>
+        <span class="trigger-tag">convert document</span>
+        <span class="trigger-tag">table extraction</span>
+      </div>
+      <ul class="capabilities">
+        <li>PDF text, table, and form data extraction</li>
+        <li>Word/DOCX creation and editing</li>
+        <li>Excel analysis with data quality audits</li>
+        <li>PowerPoint creation with design principles</li>
+        <li>Document conversion and structured output</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('processing-documents')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('processing-documents')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Producing Content at Scale -->
+    <div class="card" data-category="content" data-skill="producing-content-at-scale">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Producing Content at Scale</div>
+          <div class="slash">/producing-content-at-scale</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-content">Content</span>
+      </div>
+      <p class="card-desc">Bulk content creation, content production systems, social posts, scripts, hooks, captions, editorial calendars, visual/brand assets, and brainstorming.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">content framework</span>
+        <span class="trigger-tag">content calendar</span>
+        <span class="trigger-tag">bulk content</span>
+        <span class="trigger-tag">social media content</span>
+        <span class="trigger-tag">hooks</span>
+        <span class="trigger-tag">video scripts</span>
+        <span class="trigger-tag">brainstorm ideas</span>
+      </div>
+      <ul class="capabilities">
+        <li>Content production frameworks (master Sheet)</li>
+        <li>3-month editorial calendars</li>
+        <li>30 bulk content pieces across formats</li>
+        <li>Visual/design asset specs (Canva-ready)</li>
+        <li>Brainstorming with 30+ ideas, clustering, scoring</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('producing-content-at-scale')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('producing-content-at-scale')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Running Sales Outreach -->
+    <div class="card" data-category="sales" data-skill="running-sales-outreach">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Running Sales Outreach</div>
+          <div class="slash">/running-sales-outreach</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-sales">Sales</span>
+      </div>
+      <p class="card-desc">Cold outreach assets, email triage and response, sales scripts, follow-up sequences, objection handling, pipeline trackers, and Gmail inbox processing.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">cold outreach</span>
+        <span class="trigger-tag">email follow-up</span>
+        <span class="trigger-tag">inbox triage</span>
+        <span class="trigger-tag">Gmail</span>
+        <span class="trigger-tag">objection handling</span>
+        <span class="trigger-tag">pipeline tracker</span>
+        <span class="trigger-tag">sales scripts</span>
+      </div>
+      <ul class="capabilities">
+        <li>Gmail inbox triage with priority sorting</li>
+        <li>20+ personalized follow-up drafts</li>
+        <li>25 cold call scripts by industry</li>
+        <li>5-email follow-up sequence templates</li>
+        <li>Pipeline tracker with scoring and stages</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('running-sales-outreach')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('running-sales-outreach')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill Builder -->
+    <div class="card" data-category="utility" data-skill="skill-builder">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Skill Builder</div>
+          <div class="slash">/skill-builder</div>
+          <div class="file-count">8 files</div>
+        </div>
+        <span class="card-category cat-utility">Utility</span>
+      </div>
+      <p class="card-desc">Create new Claude Code skills from scratch, edit existing skills, or convert sub-agents to skills. SKILL.md authoring, supporting file organization, and validation.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">create a skill</span>
+        <span class="trigger-tag">new skill</span>
+        <span class="trigger-tag">edit skill</span>
+        <span class="trigger-tag">convert sub-agent</span>
+      </div>
+      <ul class="capabilities">
+        <li>Interactive skill creation workflow</li>
+        <li>SKILL.md structure and YAML formatting</li>
+        <li>Sub-agent to skill conversion guide</li>
+        <li>Node.js script templates (ESM)</li>
+        <li>Includes 7 reference docs and templates</li>
+      </ul>
+      <div class="ref-badge">+ 7 reference/template files included</div>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('skill-builder')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('skill-builder')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+    <!-- Writing Conversion Copy -->
+    <div class="card" data-category="content" data-skill="writing-conversion-copy">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Writing Conversion Copy</div>
+          <div class="slash">/writing-conversion-copy</div>
+          <div class="file-count">1 file</div>
+        </div>
+        <span class="card-category cat-content">Content</span>
+      </div>
+      <p class="card-desc">Persuasive copy: sales letters, direct response pages, ad copy, PAS/BAB frameworks, headline variations, and customer pain point research translated into messaging.</p>
+      <div class="triggers-label">Trigger Phrases</div>
+      <div class="triggers">
+        <span class="trigger-tag">write copy</span>
+        <span class="trigger-tag">sales letter</span>
+        <span class="trigger-tag">direct response</span>
+        <span class="trigger-tag">PAS framework</span>
+        <span class="trigger-tag">headline variations</span>
+        <span class="trigger-tag">ad copy</span>
+        <span class="trigger-tag">conversion copy</span>
+      </div>
+      <ul class="capabilities">
+        <li>Customer insights-to-messaging translation</li>
+        <li>Full sales letters (13-section Ogilvy/Halbert formula)</li>
+        <li>5 headline + 5 CTA variations</li>
+        <li>Customer Psychology Map</li>
+        <li>Objection handling by buyer type</li>
+      </ul>
+      <div class="card-actions">
+        <button class="btn" onclick="showInstall('writing-conversion-copy')">
+          <svg viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v9.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 11.293V1.5A.5.5 0 0 1 8 1zM2 13.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
+          Install
+        </button>
+        <button class="btn btn-primary" onclick="downloadSkill('writing-conversion-copy')">
+          <svg viewBox="0 0 16 16"><path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/><path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/></svg>
+          Download ZIP
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Install Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Install Skill</h2>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Base URL for raw file access on GitHub Pages (same origin)
+  const REPO_BASE = '';
+
+  // Search and filter
+  const searchInput = document.getElementById('search');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase();
+    cards.forEach(card => {
+      const category = card.dataset.category;
+      const text = card.textContent.toLowerCase();
+      const matchesFilter = activeFilter === 'all' || category === activeFilter;
+      const matchesSearch = !query || text.includes(query);
+      card.classList.toggle('hidden', !(matchesFilter && matchesSearch));
+    });
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+
+  // Skill file manifests (which files each skill contains)
+  const skillFiles = {
+    'building-automation-systems': ['SKILL.md'],
+    'building-software': ['SKILL.md'],
+    'developing-marketing-strategy': ['SKILL.md'],
+    'engineering-prompts-and-ai': ['SKILL.md'],
+    'humanise-text': ['SKILL.md', 'references/overused-ai-patterns.md'],
+    'managing-client-operations': ['SKILL.md'],
+    'processing-documents': ['SKILL.md'],
+    'producing-content-at-scale': ['SKILL.md'],
+    'running-sales-outreach': ['SKILL.md'],
+    'skill-builder': [
+      'SKILL.md',
+      'converting-sub-agents-to-skills.md',
+      'reference/editing-skills-guide.md',
+      'reference/metadata-requirements.md',
+      'reference/nodejs-and-cli-patterns.md',
+      'reference/skill-best-practices.md',
+      'reference/skill-structure-and-format.md',
+      'templates/skill-template.md'
+    ],
+    'writing-conversion-copy': ['SKILL.md']
+  };
+
+  // Download skill as ZIP
+  async function downloadSkill(skillName) {
+    const btn = event.currentTarget;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><path d="M8 0a8 8 0 1 0 8 8A8 8 0 0 0 8 0zm0 14.5A6.5 6.5 0 1 1 14.5 8 6.508 6.508 0 0 1 8 14.5z" opacity=".3"/><path d="M14.5 8H16A8 8 0 0 0 8 0v1.5A6.5 6.5 0 0 1 14.5 8z"/></svg> Building...';
+
+    try {
+      const zip = new JSZip();
+      const folder = zip.folder(skillName);
+      const files = skillFiles[skillName];
+
+      for (const file of files) {
+        const url = `${REPO_BASE}${skillName}/${file}`;
+        const resp = await fetch(url);
+        if (resp.ok) {
+          const text = await resp.text();
+          folder.file(file, text);
+        }
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${skillName}.zip`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      btn.innerHTML = originalHTML;
+    } catch (e) {
+      btn.innerHTML = 'Error';
+      console.error(e);
+      setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+    }
+  }
+
+  // Install modal
+  function showInstall(skillName) {
+    const modal = document.getElementById('modal-overlay');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
+
+    title.textContent = `Install: ${skillName}`;
+
+    const files = skillFiles[skillName];
+    const hasSubdirs = files.some(f => f.includes('/'));
+
+    let stepsHTML = `
+      <div class="install-step">
+        <div class="install-step-num">Step 1: Download</div>
+        <p>Click "Download ZIP" on the skill card, or clone the repo:</p>
+        <div class="code-block">
+          <button class="copy-inline" onclick="copyText(this, 'git clone https://github.com/alexdurkinbrown/claude-skills-library.git')">Copy</button>
+git clone https://github.com/alexdurkinbrown/claude-skills-library.git</div>
+      </div>
+
+      <div class="install-step">
+        <div class="install-step-num">Step 2: Copy to skills directory</div>
+        <p>Move the skill folder into your Claude Code skills directory:</p>
+        <div class="code-block">
+          <button class="copy-inline" onclick="copyText(this, 'cp -r ${skillName} ~/.claude/skills/${skillName}')">Copy</button>
+cp -r ${skillName} ~/.claude/skills/${skillName}</div>
+      </div>
+
+      <div class="install-step">
+        <div class="install-step-num">Step 3: Verify</div>
+        <p>Open Claude Code and run:</p>
+        <div class="code-block">
+          <button class="copy-inline" onclick="copyText(this, '/${skillName}')">Copy</button>
+/${skillName}</div>
+        <p style="margin-top:8px;">The skill should appear in your available skills list and respond to the slash command.</p>
+      </div>
+
+      <div class="install-step">
+        <div class="install-step-num">Files included</div>
+        <div style="margin-top:4px;">
+          ${files.map(f => `<div style="font-family:monospace;font-size:12px;color:#7777a0;padding:2px 0;">${skillName}/${f}</div>`).join('')}
+        </div>
+      </div>
+    `;
+
+    body.innerHTML = stepsHTML;
+    modal.classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+  }
+
+  document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+    });
+  }
+</script>
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+</body>
+</html>
+</content>
+</invoke>
