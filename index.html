@@ -10,8 +10,8 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0a0a0f;
-    color: #e0e0e6;
+    background: linear-gradient(135deg, #f3eeff 0%, #fce4f3 30%, #e8e0ff 60%, #f0e6ff 100%);
+    color: #4a3f5c;
     min-height: 100vh;
     padding: 40px 24px;
   }
@@ -28,27 +28,28 @@
   h1 {
     font-size: 28px;
     font-weight: 700;
-    color: #fff;
+    color: #5b3a8a;
     letter-spacing: -0.5px;
   }
 
   .count {
     font-size: 14px;
-    color: #6b6b80;
+    color: #9a8bb5;
     font-weight: 400;
   }
 
   .subtitle {
     font-size: 14px;
-    color: #6b6b80;
+    color: #8878a0;
     margin-bottom: 12px;
     line-height: 1.5;
   }
 
   .install-banner {
-    background: #12121c;
-    border: 1px solid #2a2a3a;
-    border-radius: 10px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid #e0d4f0;
+    border-radius: 14px;
     padding: 16px 20px;
     margin-bottom: 28px;
     display: flex;
@@ -63,13 +64,13 @@
 
   .install-banner-text {
     font-size: 13px;
-    color: #8888a0;
+    color: #6b5a85;
     line-height: 1.5;
   }
 
   .install-banner-text code {
-    background: #1a1a2e;
-    color: #7b7bf0;
+    background: #ece4f8;
+    color: #7c5cbf;
     padding: 2px 6px;
     border-radius: 4px;
     font-family: 'SF Mono', 'Fira Code', monospace;
@@ -86,33 +87,34 @@
   .filter-btn {
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid #2a2a3a;
-    background: transparent;
-    color: #8888a0;
+    border: 1px solid #d8cce8;
+    background: rgba(255,255,255,0.5);
+    color: #8878a0;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
   }
 
-  .filter-btn:hover { border-color: #4a4a6a; color: #c0c0d0; }
-  .filter-btn.active { background: #1a1a2e; border-color: #5b5bf0; color: #fff; }
+  .filter-btn:hover { border-color: #b8a0d8; color: #5b3a8a; background: rgba(255,255,255,0.8); }
+  .filter-btn.active { background: #9b6fd4; border-color: #9b6fd4; color: #fff; }
 
   .search-box {
     width: 100%;
     max-width: 360px;
     padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid #2a2a3a;
-    background: #12121c;
-    color: #e0e0e6;
+    border-radius: 12px;
+    border: 1px solid #d8cce8;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    color: #4a3f5c;
     font-size: 14px;
     margin-bottom: 20px;
     outline: none;
     transition: border-color 0.2s;
   }
 
-  .search-box:focus { border-color: #5b5bf0; }
-  .search-box::placeholder { color: #4a4a5a; }
+  .search-box:focus { border-color: #9b6fd4; box-shadow: 0 0 0 3px rgba(155,111,212,0.15); }
+  .search-box::placeholder { color: #b0a0c8; }
 
   .grid {
     display: grid;
@@ -121,9 +123,10 @@
   }
 
   .card {
-    background: #12121c;
-    border: 1px solid #1e1e30;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid #e4d8f0;
+    border-radius: 16px;
     padding: 24px;
     transition: all 0.25s;
     cursor: default;
@@ -132,9 +135,9 @@
   }
 
   .card:hover {
-    border-color: #3a3a5a;
+    border-color: #c8b0e0;
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 32px rgba(130,90,180,0.12);
   }
 
   .card-header {
@@ -144,7 +147,7 @@
     margin-bottom: 12px;
   }
 
-  .card-title { font-size: 16px; font-weight: 600; color: #fff; }
+  .card-title { font-size: 16px; font-weight: 600; color: #3d2d5c; }
 
   .card-category {
     font-size: 11px;
@@ -156,16 +159,16 @@
     margin-left: 12px;
   }
 
-  .cat-strategy { background: #1a1a3a; color: #7b7bf0; }
-  .cat-content { background: #1a2a1a; color: #5bcc5b; }
-  .cat-technical { background: #2a1a1a; color: #f07b7b; }
-  .cat-operations { background: #2a2a1a; color: #ccaa5b; }
-  .cat-sales { background: #1a2a2a; color: #5baacc; }
-  .cat-utility { background: #2a1a2a; color: #cc5baa; }
+  .cat-strategy { background: #ece4f8; color: #7c5cbf; }
+  .cat-content { background: #e4f5e8; color: #4a9960; }
+  .cat-technical { background: #fce8ec; color: #c75a70; }
+  .cat-operations { background: #fdf3e0; color: #b8860b; }
+  .cat-sales { background: #e4f0f8; color: #4a8aaa; }
+  .cat-utility { background: #f8e4f2; color: #b05a9a; }
 
   .card-desc {
     font-size: 13px;
-    color: #8888a0;
+    color: #6b5a85;
     line-height: 1.5;
     margin-bottom: 16px;
   }
@@ -173,7 +176,7 @@
   .triggers-label {
     font-size: 11px;
     font-weight: 600;
-    color: #5b5b70;
+    color: #9a8bb5;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 8px;
@@ -189,10 +192,10 @@
   .trigger-tag {
     font-size: 11px;
     padding: 3px 8px;
-    border-radius: 6px;
-    background: #1a1a28;
-    color: #7777a0;
-    border: 1px solid #22223a;
+    border-radius: 8px;
+    background: #f0e8fa;
+    color: #7a6898;
+    border: 1px solid #e0d4f0;
   }
 
   .capabilities {
@@ -204,7 +207,7 @@
 
   .capabilities li {
     font-size: 12px;
-    color: #7777a0;
+    color: #7a6898;
     padding: 3px 0;
     padding-left: 16px;
     position: relative;
@@ -212,10 +215,10 @@
 
   .capabilities li::before {
     content: '';
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #3a3a5a;
+    background: #c8b0e0;
     position: absolute;
     left: 0;
     top: 10px;
@@ -226,16 +229,16 @@
     gap: 8px;
     margin-top: auto;
     padding-top: 16px;
-    border-top: 1px solid #1e1e30;
+    border-top: 1px solid #e8ddf5;
   }
 
   .btn {
     flex: 1;
     padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #2a2a3a;
-    background: #1a1a28;
-    color: #b0b0c0;
+    border-radius: 10px;
+    border: 1px solid #d8cce8;
+    background: rgba(255,255,255,0.6);
+    color: #6b5a85;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
@@ -247,21 +250,22 @@
   }
 
   .btn:hover {
-    border-color: #5b5bf0;
-    color: #fff;
-    background: #1a1a2e;
+    border-color: #9b6fd4;
+    color: #5b3a8a;
+    background: rgba(255,255,255,0.9);
   }
 
   .btn-primary {
-    background: #1a1a3a;
-    border-color: #3a3a6a;
-    color: #9b9bf0;
+    background: linear-gradient(135deg, #b088d4, #9b6fd4);
+    border-color: transparent;
+    color: #fff;
   }
 
   .btn-primary:hover {
-    background: #2a2a4a;
-    border-color: #5b5bf0;
+    background: linear-gradient(135deg, #a070cc, #8a5cc8);
+    border-color: transparent;
     color: #fff;
+    box-shadow: 0 4px 12px rgba(155,111,212,0.3);
   }
 
   .btn svg {
@@ -271,9 +275,9 @@
   }
 
   .btn.copied {
-    border-color: #3a6a3a;
-    color: #5bcc5b;
-    background: #0a1a0a;
+    border-color: #a0d8a0;
+    color: #4a9960;
+    background: #e4f5e8;
   }
 
   .ref-badge {
@@ -281,28 +285,28 @@
     align-items: center;
     gap: 4px;
     font-size: 11px;
-    color: #5bcc5b;
+    color: #4a9960;
     margin-bottom: 12px;
     padding: 3px 8px;
-    background: #0a1a0a;
-    border-radius: 6px;
-    border: 1px solid #1a2a1a;
+    background: #e4f5e8;
+    border-radius: 8px;
+    border: 1px solid #c8e8cc;
   }
 
   .slash {
     font-family: 'SF Mono', 'Fira Code', monospace;
     font-size: 12px;
-    color: #5b5bf0;
-    background: #1a1a2e;
+    color: #7c5cbf;
+    background: #ece4f8;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 6px;
     margin-top: 6px;
     display: inline-block;
   }
 
   .file-count {
     font-size: 11px;
-    color: #5b5b70;
+    color: #9a8bb5;
     margin-top: 4px;
   }
 
@@ -313,7 +317,8 @@
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(90,60,130,0.4);
+    backdrop-filter: blur(4px);
     z-index: 100;
     align-items: center;
     justify-content: center;
@@ -323,20 +328,21 @@
   .modal-overlay.active { display: flex; }
 
   .modal {
-    background: #12121c;
-    border: 1px solid #2a2a3a;
-    border-radius: 16px;
+    background: #faf6ff;
+    border: 1px solid #e0d4f0;
+    border-radius: 20px;
     max-width: 700px;
     width: 100%;
     max-height: 80vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 20px 60px rgba(90,60,130,0.2);
   }
 
   .modal-header {
     padding: 20px 24px;
-    border-bottom: 1px solid #1e1e30;
+    border-bottom: 1px solid #e8ddf5;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -344,19 +350,19 @@
 
   .modal-header h2 {
     font-size: 18px;
-    color: #fff;
+    color: #3d2d5c;
   }
 
   .modal-close {
     background: none;
     border: none;
-    color: #6b6b80;
+    color: #9a8bb5;
     font-size: 24px;
     cursor: pointer;
     padding: 0 4px;
   }
 
-  .modal-close:hover { color: #fff; }
+  .modal-close:hover { color: #5b3a8a; }
 
   .modal-body {
     padding: 24px;
@@ -370,25 +376,25 @@
   .install-step-num {
     font-size: 12px;
     font-weight: 600;
-    color: #5b5bf0;
+    color: #9b6fd4;
     margin-bottom: 6px;
   }
 
   .install-step p {
     font-size: 13px;
-    color: #8888a0;
+    color: #6b5a85;
     line-height: 1.5;
     margin-bottom: 8px;
   }
 
   .code-block {
-    background: #0a0a14;
-    border: 1px solid #1e1e30;
-    border-radius: 8px;
+    background: #f0e8fa;
+    border: 1px solid #e0d4f0;
+    border-radius: 10px;
     padding: 12px 16px;
     font-family: 'SF Mono', 'Fira Code', monospace;
     font-size: 12px;
-    color: #c0c0d0;
+    color: #4a3f5c;
     overflow-x: auto;
     position: relative;
     white-space: pre-wrap;
@@ -401,18 +407,18 @@
     right: 8px;
     padding: 4px 8px;
     font-size: 11px;
-    border-radius: 4px;
-    border: 1px solid #2a2a3a;
-    background: #1a1a28;
-    color: #8888a0;
+    border-radius: 6px;
+    border: 1px solid #d8cce8;
+    background: rgba(255,255,255,0.7);
+    color: #7a6898;
     cursor: pointer;
   }
 
-  .code-block .copy-inline:hover { color: #fff; border-color: #5b5bf0; }
+  .code-block .copy-inline:hover { color: #5b3a8a; border-color: #9b6fd4; }
 
   .modal-footer {
     padding: 16px 24px;
-    border-top: 1px solid #1e1e30;
+    border-top: 1px solid #e8ddf5;
     display: flex;
     gap: 8px;
     justify-content: flex-end;
