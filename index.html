@@ -312,6 +312,50 @@
 
   .hidden { display: none; }
 
+  .stack-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 12px;
+    padding: 4px 11px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #7c5cbf;
+    background: #f3eefb;
+    border: 1px solid #e2d6f5;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .stack-badge:hover { background: #e9ddfa; border-color: #cdb6ec; }
+  .stack-badge svg { width: 11px; height: 11px; fill: currentColor; opacity: .85; }
+
+  .group-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 11px 16px;
+    background: #f3eefb;
+    border: 1px solid #e2d6f5;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #5b4a7c;
+  }
+  .group-banner b { color: #7c5cbf; font-weight: 600; }
+  .group-banner .clear-group {
+    margin-left: auto;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #7c5cbf;
+    background: #fff;
+    border: 1px solid #e2d6f5;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  .group-banner .clear-group:hover { background: #ece4f8; }
+
   /* Modal */
   .modal-overlay {
     display: none;
@@ -459,6 +503,11 @@
     <button class="filter-btn" data-filter="operations">Operations</button>
     <button class="filter-btn" data-filter="sales">Sales</button>
     <button class="filter-btn" data-filter="utility">Utility</button>
+  </div>
+
+  <div class="group-banner hidden" id="group-banner">
+    <span id="group-banner-text"></span>
+    <button class="clear-group" onclick="clearGroup()">Show all</button>
   </div>
 
   <div class="grid" id="skills-grid">
@@ -909,6 +958,10 @@
         <span class="card-category cat-utility">Utility</span>
       </div>
       <p class="card-desc">Writing rules that kill AI tells and make any piece sound human. Removes em dashes, contrast constructions, choppy pacing, and filler. Covers sentence rhythm, banned words, specificity, and warm endings.</p>
+      <div class="stack-badge" onclick="showStack('page-voice')" title="Pairs with website-copy-architect — click to see both">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        Pairs with website-copy-architect
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">remove AI slop</span>
@@ -987,6 +1040,10 @@
         <span class="card-category cat-content">Content</span>
       </div>
       <p class="card-desc">Content Operator by Jim Carter III. Produces one finished piece of content (post, email, newsletter, script, article) by pulling together voice architecture, workflow context, and business knowledge. The execution layer of the 3-Layer System.</p>
+      <div class="stack-badge" onclick="showStack('three-layer')" title="Part of the 3-Layer System — click to see the stack">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        3-Layer System
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">run content operator</span>
@@ -1026,6 +1083,10 @@
         <span class="card-category cat-strategy">Strategy</span>
       </div>
       <p class="card-desc">The Decision Filter by Jim Carter III. A 5-question framework that evaluates any AI tool, hire, project, or investment against the 3-Layer System to decide if it's worth your time and money.</p>
+      <div class="stack-badge" onclick="showStack('three-layer')" title="Part of the 3-Layer System — click to see the stack">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        3-Layer System
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">run the decision filter</span>
@@ -1064,6 +1125,10 @@
         <span class="card-category cat-content">Content</span>
       </div>
       <p class="card-desc">Voice Builder by Jim Carter III. Interactive skill that extracts a brand voice from real writing samples and generates a permanent voice architecture file for your AI. Layer 1 of the 3-Layer System.</p>
+      <div class="stack-badge" onclick="showStack('three-layer')" title="Part of the 3-Layer System — click to see the stack">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        3-Layer System
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">run the voice builder</span>
@@ -1102,6 +1167,10 @@
         <span class="card-category cat-operations">Operations</span>
       </div>
       <p class="card-desc">Workflow Mapper by Jim Carter III. Documents one repeatable business workflow (content production, client delivery, launches, team ops) into a format AI can execute against. Layer 2 of the 3-Layer System.</p>
+      <div class="stack-badge" onclick="showStack('three-layer')" title="Part of the 3-Layer System — click to see the stack">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        3-Layer System
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">run the workflow mapper</span>
@@ -1178,6 +1247,10 @@
         <span class="card-category cat-content">Content</span>
       </div>
       <p class="card-desc">Structure and write conversion-focused home page copy for personal brands, consultants, and service businesses. Built on a proven agency framework with strict per-section character and word counts.</p>
+      <div class="stack-badge" onclick="showStack('page-voice')" title="Pairs with ai-slop-killa — click to see both">
+        <svg viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a3.999 3.999 0 0 1-.128-1.287z"/><path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/></svg>
+        Pairs with ai-slop-killa
+      </div>
       <div class="triggers-label">Trigger Phrases</div>
       <div class="triggers">
         <span class="trigger-tag">home page copy</span>
@@ -1231,6 +1304,19 @@
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.card');
   let activeFilter = 'all';
+  let activeGroup = null;
+
+  // Skill groups — which skills are designed to run together
+  const stacks = {
+    'three-layer': {
+      label: '3-Layer System',
+      skills: ['jc3-voice-builder', 'jc3-workflow-mapper', 'jc3-content-operator', 'jc3-decision-filter']
+    },
+    'page-voice': {
+      label: 'home page copy + voice (website-copy-architect + ai-slop-killa)',
+      skills: ['website-copy-architect', 'ai-slop-killa']
+    }
+  };
 
   function applyFilters() {
     const query = searchInput.value.toLowerCase();
@@ -1239,8 +1325,34 @@
       const text = card.textContent.toLowerCase();
       const matchesFilter = activeFilter === 'all' || category === activeFilter;
       const matchesSearch = !query || text.includes(query);
-      card.classList.toggle('hidden', !(matchesFilter && matchesSearch));
+      const matchesGroup = !activeGroup || activeGroup.includes(card.dataset.skill);
+      card.classList.toggle('hidden', !(matchesFilter && matchesSearch && matchesGroup));
     });
+  }
+
+  function showStack(key) {
+    const stack = stacks[key];
+    if (!stack) return;
+    // Clicking the active stack again clears it
+    if (activeGroup && activeGroup.join() === stack.skills.join()) {
+      clearGroup();
+      return;
+    }
+    activeGroup = stack.skills;
+    activeFilter = 'all';
+    searchInput.value = '';
+    filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+    document.getElementById('group-banner-text').innerHTML =
+      'Showing the <b>' + stack.label + '</b> group · ' + stack.skills.length + ' skills meant to run together';
+    document.getElementById('group-banner').classList.remove('hidden');
+    applyFilters();
+    document.getElementById('skills-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function clearGroup() {
+    activeGroup = null;
+    document.getElementById('group-banner').classList.add('hidden');
+    applyFilters();
   }
 
   filterBtns.forEach(btn => {
@@ -1248,11 +1360,15 @@
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeFilter = btn.dataset.filter;
+      if (activeGroup) clearGroup();
       applyFilters();
     });
   });
 
-  searchInput.addEventListener('input', applyFilters);
+  searchInput.addEventListener('input', () => {
+    if (activeGroup) clearGroup();
+    applyFilters();
+  });
 
   // Skill file manifests (which files each skill contains)
   const skillFiles = {
